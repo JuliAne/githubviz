@@ -108,22 +108,17 @@
       
       .gallery{
       	text-align: center;
+      	float:right;
       }
       
-      #desc_text{
-      	width:500px;
+      #description_text{
+      	width:250px;
       }
       
       #header{
       	padding:10px;
       }
-      
-      .description {
-      	text-align:center;
-      	clear:both;
-      	height: 85px;
-      }
-      
+         
       .formlabel {
       	font-size: 10pt;
       }
@@ -139,12 +134,12 @@
       }
       
       .level_buttons{
-      	float:right;
+      	padding: 10% 0;
       }
       
       .level_buttons form{
       	float:left;
-      	padding: 0px 10px 0px 0px;
+      	padding: 2% 2% 0 0;
       }
       
       .table_text{text-align: left;
@@ -153,52 +148,52 @@
 	  .mode{
 	  	clear: both;
 		font-size: 10pt;
-		padding: 5px 5px 0 0;
+		padding: 2% 2% 0 0;
 	  }
 	  .show_hide{
 	  	float:left;
 		font-size: 10pt;
 		padding: 0 0 0 0;
-		margin-top: 2%;
+		margin-top: 4%;
 	  }
 	  .chord {
 	  font-size: 8pt; 
 	  font-family: sans-serif;
 	  height: 700px;
 	  padding-left: 0px;
-	}
+	  }
 	
-	path.chord {
+	  path.chord {
 	  fill-opacity: .85;
 	  stroke-opacity: 1.0;
-	}
+	  }
 	
-	path{
+	  path{
 	  fill-opacity: 1.0;
 	  stroke-opacity: 1.0;
-	}
+	  }
 	
-	.clickarea{
-	width: 280px;
-	height: 280px;
-	margin: 210px 0 0 -140px;
-	z-index: 1;
-	left:50%;
-	position: absolute;
-	cursor: pointer;
-	}
+	  .clickarea{
+	  width: 280px;
+	  height: 280px;
+	  margin: 210px 0 0 0;
+	  z-index: 1;
+	  left:50%;
+	  position: absolute;
+	  cursor: pointer;
+	  }
 	
-	svg.chord {
-	clear: both;
-	position: absolute;
-	z-index: 0;
-	left:50%;
-	margin-left:-350px;
-	width: 700px;
-	}
-	
-	.nodetext {pointer-events: none; font: 10px sans-serif; }
-	
+	  svg.chord {
+	  clear: both;
+	  position: absolute;
+	  z-index: 0;
+	  left:50%;
+	  margin-left:-200px;
+	  width: 800px;
+	  }
+	  .desc{width: 250px; background-color:#1F77B4; float:left; padding: 1%;}
+	  .nodetext {pointer-events: none; font: 10px sans-serif; }
+	  .start_description{clear: left; text-align: center;}
     </style>
   </head>
   <body>
@@ -224,7 +219,7 @@
     </div>
     <div id="content">    
     <div id="viz">
-    <div class="description">
+    <div class="start_description">
 	<p>Please enter your user name! You're not registered? Please register a user name @ github!</p>
     </div>
     <div class="gallery">

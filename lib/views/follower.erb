@@ -1,6 +1,5 @@
 <% if @result.length > 0 then%>
     <script type="text/javascript">
-    var showOrHide = true;
       	$(function (){
         	$('.level_form').submit(function(ev){
           		ev.preventDefault();
@@ -23,9 +22,9 @@
 		              $('#chart').html(data);
 		        	}
           		});
-          		$('#desc_text').empty();
-          		$('#desc_text').append($("<p>network of alters followed by and following ego</p>"));
-      			$('#description').show();
+          		$('#description_text').empty();
+          		$('#description_text').append($("<h3><%= @user %>'s CIRCLE Mode</h3><p>network of alters followed by and following ego</p>"));
+      			$('#description_text').show();
       			$('form.level_form').hide();
         	});
         	$('#showhide').toggle(
@@ -55,11 +54,20 @@
 			        	}
 	          	});
         	});
+        	$('#description').css("height", $(window).height() - $("#header").height());   		
         });
     </script>
     <div id="viz">
-    <div class="description">
-    	<div class="level_buttons"> 
+    <div style="clear:left;">
+      <div class='desc' id='description'> 
+      	<div id ="description_text">
+    		<h3><%= @user%>'s network of <%= @data.keys.length%> followers</h3>
+    		<p>This visualization shows the user's network of followers in 1 level or 2 levels.<br/> 
+    		In the 1st level all gitusers which are directly following <%=@user%> are displayed. <br/> 
+    		In the 2nd level all direct followers of <%=@user%>'s followers are additionally displayed.
+    		</p>
+      	</div>
+      	<div class="level_buttons"> 
       		<form class="level_form" action="/follower_viz" method="post">
       			<input name="user" type="hidden" value="<%= @user %>">
       			<input type="submit" value="1 Level">
@@ -76,26 +84,17 @@
 	    	</div>
 	    	
 	    	<button title="showOrHide" id ="showhide" class="show_hide">hide user name</button>
-	    	
-    	</div>
-    	<div id ="desc_text" style="float:right;padding-right:18%">
-    		<h3><%= @user%>'s network of <%= @data.keys.length%> followers</h3>
-    		<p>This visualization shows the user's network of followers in 1 level or 2 levels.<br/> 
-    		In the 1st level all gitusers which are directly following <%=@user%> are displayed. <br/> 
-    		In the 2nd level all direct followers of <%=@user%>'s followers are additionally displayed.
-    		</p>
-    	</div>
-    </div>
-    <div style="clear:left;">
-      <div class='gallery' id='chart'> </div>
+      	</div>	
+      </div>
+     <div class='gallery' id='chart'> </div>
     </div>
     <script src='d3.layout.js?2.7.2' type='text/javascript'></script>
     <script src='d3.geom.js?2.7.2' type='text/javascript'> </script>
     <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.4.4/jquery.min.js"></script>
     <script type='text/javascript'>
     $(function (){
-      var w = $(window).width() - 20
-          h = $(window).height() - $("#header").height() -150
+      var w = $(window).width() - 280
+          h = $(window).height() - $("#header").height() -100
           fill = d3.scale.category20();
       var vis = d3.select("#chart").append("svg")
           .attr("width", w)
