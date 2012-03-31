@@ -28,9 +28,9 @@
         $('#viz_network').empty();
       	$('#viz_repos').empty();
 	  	$('#viz_commits').empty();
-	  	$('#viz_network').append($("<strong>Follower</strong>"));
-      	$('#viz_repos').append($("<strong>RepositoryGrowth</strong>"));
-	  	$('#viz_commits').append($("<strong>Commit Activity</strong>"));
+	  	$('#viz_network').append(document.createTextNode("Follower"));
+      	$('#viz_repos').append(document.createTextNode("RepositoryGrowth"));
+	  	$('#viz_commits').append(document.createTextNode("CommitActivity"));
       	$('#menu').show();
           
         });
@@ -95,15 +95,17 @@
       * {
         margin:0px;
         padding: 0px;
-        font-family: Arial;
+        font-family: Verdana;
+        color: #7f7f7f;
       }
       
       h3 {
        padding-bottom: 5px;
+      
       }
       
       p {
-      	font-size: 10pt;
+      	font-size: 12pt;
       }
       
       .gallery{
@@ -120,7 +122,7 @@
       }
          
       .formlabel {
-      	font-size: 10pt;
+      	font-size: 12pt;
       }
       
       #menu{
@@ -131,6 +133,16 @@
       	float:left;
       	list-style-type: none;
       	padding: 10px 0px 0px 10px;
+      	font-size:12pt;
+      	font-weight: lighter;
+      }
+      
+      a{
+      	text-decoration: none;
+      	color: #7f7f7f;
+      }
+      a:hover{
+      	color: #000000;
       }
       
       .level_buttons{
@@ -147,7 +159,7 @@
 
 	  .mode{
 	  	clear: both;
-		font-size: 10pt;
+		font-size: 12pt;
 		padding: 2% 2% 0 0;
 	  }
 	  .show_hide{
@@ -158,7 +170,7 @@
 	  }
 	  .chord {
 	  font-size: 8pt; 
-	  font-family: sans-serif;
+	  font-family: Verdana, sans-serif;
 	  height: 700px;
 	  padding-left: 0px;
 	  }
@@ -191,8 +203,8 @@
 	  margin-left:-200px;
 	  width: 800px;
 	  }
-	  .desc{width: 250px; background-color:#1F77B4; float:left; padding: 1%;}
-	  .nodetext {pointer-events: none; font: 10px sans-serif; }
+	  .desc{width: 250px; background-color:#CDCDCD; float:left; padding: 1%;}
+	  .nodetext {pointer-events: none; font: 10px Verdana, sans-serif; }
 	  .start_description{clear: left; text-align: center;}
     </style>
   </head>
@@ -208,14 +220,14 @@
       			<input type="submit" value="Do it!">
       			<input type="hidden" name="level" value="1">
     		</form>
-  	</div>
+  		</div>
 	<div id="menu">
       	<ul>
 		<li><a id="viz_network" href="#"></a></li>
 		<li><a id="viz_repos" href="#"></a></li>
 		<li><a id="viz_commits" href="#"></a></li>
       	</ul>
-    	</div>
+    </div>
     </div>
     <div id="content">    
     <div id="viz">
