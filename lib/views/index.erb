@@ -28,9 +28,9 @@
         $('#viz_network').empty();
       	$('#viz_repos').empty();
 	  	$('#viz_commits').empty();
-	  	$('#viz_network').append(document.createTextNode("Follower"));
-      	$('#viz_repos').append(document.createTextNode("RepositoryGrowth"));
-	  	$('#viz_commits').append(document.createTextNode("CommitActivity"));
+	  	$('#viz_network').append(document.createTextNode("follower"));
+      	$('#viz_repos').append(document.createTextNode("repository growth"));
+	  	$('#viz_commits').append(document.createTextNode("commit activity"));
       	$('#menu').show();
           
         });
@@ -119,6 +119,8 @@
       
       #header{
       	padding:10px;
+      	background-color:#CDCDCD;
+      	height: 100px;
       }
          
       .formlabel {
@@ -132,9 +134,13 @@
        #menu li{
       	float:left;
       	list-style-type: none;
-      	padding: 10px 0px 0px 10px;
+      	padding: 10px 0px 0px 20px;
       	font-size:12pt;
       	font-weight: lighter;
+      }
+      
+      #viz_form{
+      	padding: 10px 0px 0px 0px;
       }
       
       a{
@@ -171,7 +177,7 @@
 	  .chord {
 	  font-size: 8pt; 
 	  font-family: Verdana, sans-serif;
-	  height: 700px;
+	  
 	  padding-left: 0px;
 	  }
 	
@@ -203,7 +209,7 @@
 	  margin-left:-200px;
 	  width: 800px;
 	  }
-	  .desc{width: 250px; background-color:#CDCDCD; float:left; padding: 1%;}
+	  .desc{width: 250px; background-color:#CDCDCD; float:left; padding: 0 1%;}
 	  .nodetext {pointer-events: none; font: 10px Verdana, sans-serif; }
 	  .start_description{clear: left; text-align: center;}
     </style>
