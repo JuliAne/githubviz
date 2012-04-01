@@ -9,13 +9,16 @@ var index = [];
 var index2 = [];
 var a = 0;
 var b = 0;
-var r1 = 700 / 2,
-    r0 = r1 - 140;
-var w = $(window).width() - 280;
+var r1 = 320,
+    r0 = r1 - 120;
+
+var h = $(document).height() - $("#header").height()- $("#footer").height() - 30;
+var transform_g = h/2;
+
 var fill = d3.scale.category20();
 
 var chord = d3.layout.chord()
-    .padding(.02)
+    .padding(.05)
 
 var arc = d3.svg.arc()
     .innerRadius(r0)
@@ -26,13 +29,13 @@ var clickarea = d3.select("#chart").append("div")
     .style("opacity", 0);
 
 var svg = d3.select("#chart").append("svg")
-    .attr("width", w)
-    .attr("height", r1 * 2)
+    .attr("width", h)
+    .attr("height", h)
     .attr("class", "chord")
     //.attr("transform", "translate(" + r1 + "," + r1 + ")")
     //.attr("height", 10)
   .append("g")
-    .attr("transform", "translate(" + r1 + "," + r1 + ")");	
+    .attr("transform", "translate(" + transform_g + "," + transform_g + ")");	
   
 d3.select("div.clickarea").on("click", fade2(1));
 

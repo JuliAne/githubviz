@@ -78,7 +78,7 @@
           });
 
         });
-        
+       
       });
     </script>
     <style>
@@ -98,7 +98,31 @@
         font-family: Verdana;
         color: #7f7f7f;
       }
-      
+     
+      html, body {height: 100%;}
+
+	  #wrap {min-height: 100%;}
+
+      #main {overflow:auto;
+	  padding-bottom: 30px;}  /* must be same height as the footer */
+
+      #footer {position: relative;
+	  margin-top: -30px; /* negative value of footer height */
+	  height: 30px;
+	  clear:both;
+	  text-align: center;
+	  background-color: #a1e80c;} 
+
+     /*Opera Fix*/
+     body:before {
+	 content:"";
+	 height:100%;
+	 float:left;
+	 width:0;
+	 margin-top:-32767px;/
+     }
+
+     
       h3 {
        padding-bottom: 5px;
       
@@ -109,10 +133,10 @@
       }
       
       .gallery{
-      	text-align: center;
+      	
       	float:right;
       }
-      
+          
       #description_text{
       	width:250px;
       }
@@ -172,7 +196,7 @@
 	  	float:left;
 		font-size: 10pt;
 		padding: 0 0 0 0;
-		margin-top: 4%;
+		margin-top: 4%;rr
 	  }
 	  .chord {
 	  font-size: 8pt; 
@@ -194,7 +218,7 @@
 	  .clickarea{
 	  width: 280px;
 	  height: 280px;
-	  margin: 210px 0 0 0;
+	  margin: 10% 0 0 0;
 	  z-index: 1;
 	  left:50%;
 	  position: absolute;
@@ -206,15 +230,24 @@
 	  position: absolute;
 	  z-index: 0;
 	  left:50%;
-	  margin-left:-200px;
-	  width: 800px;
+	  margin-left:-9%;
 	  }
 	  .desc{width: 250px; background-color:#CDCDCD; float:left; padding: 0 1%;}
 	  .nodetext {pointer-events: none; font: 10px Verdana, sans-serif; }
 	  .start_description{clear: left; text-align: center;}
+	
+     
     </style>
+    <!--[if !IE 7]>
+	<style type="text/css">
+		#wrap {display:table;height:100%}
+	</style>
+    <![endif]-->
+    
   </head>
   <body>
+  	<div id="wrap"> 
+  	<div id="main"> 
     <div id="header">
     	<div style="float:left;">
     		<h1><a href="/" name="go home">githubviz</a></h1>
@@ -234,14 +267,18 @@
 		<li><a id="viz_commits" href="#"></a></li>
       	</ul>
     </div>
-    </div>
-    <div id="content">    
+    </div>  
+    <div id="content">  
     <div id="viz">
     <div class="start_description">
 	<p>Please enter your user name! You're not registered? Please register a user name @ github!</p>
     </div>
     <div class="gallery">
     </div>
-	</div></div>
+	</div>
+	</div>
+	</div>
+	</div>
+	<div id="footer">Githubviz 2012</div>
   </body>
 </html>

@@ -54,7 +54,8 @@
 			        	}
 	          	});
         	});
-        	$('#description').css("height", $(window).height() - $("#header").height());   		
+        	var height = $(document).height() - $("#header").height()- $("#footer").height() - 20;
+        	$('#description').css("height", height);   		
         });
     </script>
     <div id="viz">
@@ -93,8 +94,8 @@
     <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.4.4/jquery.min.js"></script>
     <script type='text/javascript'>
     $(function (){
-      var w = $(window).width() - 280
-          h = $(window).height() - $("#header").height() -100
+      var w = $(window).width() - 290
+          h = $(document).height() - $("#header").height()- $("#footer").height()-30
           fill = d3.scale.category20();
       var vis = d3.select("#chart").append("svg")
           .attr("width", w)
