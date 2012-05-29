@@ -4,14 +4,10 @@ env    = ENV['RACK_ENV'] || "development"
 
 if env == 'development'
   require 'sqlite3'
+  require 'yaml'
+  @@config = YAML.load_file('database.yml')[env]
 else
   require 'pg'
-end
-
-#begin
-#  require 'yaml'
-#  @@config = YAML.load_file('database.yml')[env]
-#rescue
   require 'uri'
   db = URI.parse(ENV['DATABASE_URL'])
 
@@ -23,4 +19,4 @@ end
     "database" => db.path[1..-1],
     "encoding" => 'utf8'
   }
-#end
+end
