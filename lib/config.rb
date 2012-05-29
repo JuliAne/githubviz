@@ -8,10 +8,10 @@ else
   require 'pg'
 end
 
-begin
-  require 'yaml'
-  @@config = YAML.load_file('database.yml')[env]
-rescue
+#begin
+#  require 'yaml'
+#  @@config = YAML.load_file('database.yml')[env]
+#rescue
   require 'uri'
   db = URI.parse(ENV['DATABASE_URL'])
 
@@ -23,4 +23,4 @@ rescue
     "database" => db.path[1..-1],
     "encoding" => 'utf8'
   }
-end
+#end
