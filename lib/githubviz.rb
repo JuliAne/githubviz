@@ -2,6 +2,10 @@
 
 require 'rubygems'
 require 'sinatra'
+require 'active_record'
+
+class Request < ActiveRecord::Base
+end
 
 class ApiConnection
 
@@ -12,16 +16,31 @@ class ApiConnection
     @connection = GitHubV3API.new(api_key)
   end
 
-  def get url
-    @connection.get url
-  end
+  def get url, paging=false
+    name = url.match(/^\/users\/([^\/]+)\/*/)[1]
+    type = url[/[^\/]+$/]
+    type = "user" unless %w[repos followers].include? type
 
-  def users url
-    @connection.users.get url
-  end
-  
-  def repos url, page
-    @connection.repos.list_repos url, page
+    req = Request.where("name = ? AND content_type = ? AND updated_at > ?", name, type, Time.now - 1.week).limit(1)[0]
+
+    result = []
+
+    if req
+      result = JSON.parse(req.content)
+    else
+      puts "doing an api request..."
+      if paging
+        (paging / 30.0).ceil.times do |page|
+          result += @connection.get "#{url}?page=#{page+1}"
+        end
+      else
+        result = @connection.get url
+      end
+
+      Request.create!(:name => name, :content_type => type, :content => result.to_json)
+    end
+
+    result
   end
 
   NoApiKeyError = Class.new(StandardError)
@@ -31,11 +50,16 @@ class GithubViz < Sinatra::Base
 
 set :app_file, __FILE__
 
+require 'config'
+
 begin
   @@api = ApiConnection.new ENV['GITHUB_API_KEY']
 rescue ArgumentError
   raise ApiConnection::NoApiKeyError, "Please set the ENV['GITHUB_API_KEY'] var"
 end
+
+ActiveRecord::Base.establish_connection(@@config)
+ActiveRecord::Base.connection
 
 def process_circle_data
    @test = {}
@@ -73,7 +97,6 @@ def get_data
             t[f['login']]['follower_count'] = 0
             t[f['login']]['followers'] = @@api.get("/users/#{f['login']}/followers")
             t[f['login']]['user'] = @@api.get("/users/#{f['login']}")
-
           end
         end
       end
@@ -98,105 +121,75 @@ def process_data
     end
   end
 
-  @result['nodes'].map!{|n| {"name" => n, "group" => 1, "img" => @data[n]['avatar_url'], "profilseite" => @data[n]['user']['html_url'], "follower_count" => @data[n]['follower_count'], "color" => ""}}
+  @result['nodes'].map!{|n| {
+    "name" => n,
+    "group" => 1,
+    "img" => @data[n]['avatar_url'],
+    "profilseite" => @data[n]['user']['html_url'],
+    "follower_count" => @data[n]['follower_count'],
+    "color" => "",
+    "public_repos" => @data[n]['user']['public_repos']
+  }}
 
-  #if @lang == 1
   script_language
-  #end
-  
+
 end
 
 def script_language
-  origin = 0
-  counter = 0
-  @color = ["#FF0000", "#FF8000", "#FFFF00", "#80FF00", "#00FF80", "#00FFFF", "#0080FF", "#0000FF", "#8000FF", "#FF00FF", "#FF0080", "#000000", "#A9A9A9", "#800000", "#804000", "#808000", "#008040", "#008080", "#004080", "#800060" ]
-
-  @result['nodes'].each do |user|
-    user_data = @@api.users(user['name'])
-    page = 1
-    count = 30
-    user_repos = Array.new
-    # begin handle repo paging
-    while user_data.public_repos > count do
-      page = page +1
-      count = count + 30
-    end
-    # end handle repo paging  
-
-    while page >= 1 do
-      user_repos[page-1] = @@api.repos(user['name'], page)
-      page = page - 1
-    end
-    #begin preparing to get repo languages of a git user
-    @repos = user_repos
-    @j = {}
-    start = 0
-    @j["repos"] = []
-    @j["repo_data"] = []
-    @j["language"] = []
-    @j["sort"] = {}
-    @j["max_lang"]=[]
-    @repos.each do |page|
-      page.each do |repo|
-        @j["repos"] << {"language"=>repo.language,"count" => 0}
-      end
-    end
-    # end preparing to get scriptlanguages of a git user
-
-    #remove doubles for comparing languages and count them
-    @j["repo_data"] = @j["repos"].uniq
-
-    #comparing languages of all repos and count them
-    @j["repo_data"].each do |language1|
-      @j["repos"].each do |language2|
-        if language1["language"] == language2["language"] then
-          language1["count"] += 1
-        end
-      end
-      @j["sort"].store(language1["language"], language1["count"])
-    end
-    #sort descending by language counts
-    @sort = @j["sort"].sort_by {|key, value| -value}
-    #compare languages (langauage or no language?) and add scriptlanguage to result
-    unless @sort.empty?
-      @sort.each do |scriptlanguage|
-        if scriptlanguage[1] == @sort[0][1] then
-          @j["max_lang"] << scriptlanguage[0]
-        end
-      end
-    else
-      @j["max_lang"] << "nothing"
-    end
-    user['scriptlanguage'] = @j["max_lang"]
-  end
-  #prepring to get legend for scriptlanguages
   @scriptlanguage_legend = []
+  
   @result['nodes'].each do |user|
+    @repos = @@api.get("/users/#{user['name']}/repos", user['public_repos'])
+    languages = {}
+    
+    if @repos.count == 0
+      user['scriptlanguage'] = 'nothing'
+    else
+      @repos.each do |repo|
+        
+        if repo['language'].nil?
+          repo['language'] = 'unknown'
+        end
+        
+        if languages.has_key? repo['language']
+          languages[repo['language']] += 1
+        else
+          languages[repo['language']] = 1
+        end
+        
+      end
+
+      most_used_languages = {}
+      languages.each do |lang_name, lang_count|
+        if most_used_languages.has_key? lang_count
+          most_used_languages[lang_count] << lang_name
+        else
+          most_used_languages[lang_count] = [lang_name]
+        end
+      end
+      #{12 => ["Ruby", "C++"], 5 => ["Javascript"], 3 => ['HTML', 'CSS']}
+
+      user['scriptlanguage'] = most_used_languages.sort {|a,b| b[0] <=> a[0]}[0][1]
+      #['C++', 'Ruby']
+    end
+    #prepring to get legend for scriptlanguages
     @scriptlanguage_legend << {"lang" => user['scriptlanguage'], "count" => 0, "color" => ""}
   end
+
   @legend = @scriptlanguage_legend.uniq
-  #add colors for languages
-  if @legend.count <= @color.count then
-   @color = @color
-  else
-   color_adder = @legend.count - @color.count
-   while color_adder > 0
-     @color[@color.count - 1 + color_adder] = @color[origin]
-     color_adder -= 1
-     origin += 1
-   end
-  end
+  
   #get languages, count them and add color to result
   @legend.each do |lang|
+    colour = "%06x" % (rand * 0xffffff)
+    lang["color"] = colour.insert(0, '#')
     @result['nodes'].each do |lang2|
-      if lang["lang"] == lang2["scriptlanguage"] then
+      if lang["lang"] == lang2["scriptlanguage"]
         lang["count"] += 1
-        lang["color"] = @color[counter]
-        lang2["color"] = @color[counter]
+        lang2["color"] = lang["color"]
       end
     end
-    counter += 1
   end
+  
   #language sort descending by counts
   @legend = @legend.sort_by {|k| -k['count'] }
 end
@@ -220,11 +213,7 @@ get '/follower_viz' do
   @MAX_LEVELS = params[:level].to_i
 
   @user = params[:user]
- 
-  #@lang = params[:script_language].to_i
 
-  @page = 1
-  @count = 30
   @user_repos = Array.new
 
   if @user
@@ -239,7 +228,7 @@ end
 get '/repo_viz' do
   @user = params[:user]
 
-  user_data = @@api.users(@user)
+  user_data = @@api.get("/users/#{@user}")
 
   erb :repo
 end
