@@ -136,22 +136,27 @@ def process_data
 end
 
 def script_language
-  origin = 0
-  counter = 0
-  @color = ["#FF0000", "#FF8000", "#FFFF00", "#80FF00", "#00FF80", "#00FFFF", "#0080FF", "#0000FF", "#8000FF", "#FF00FF", "#FF0080", "#000000", "#A9A9A9", "#800000", "#804000", "#808000", "#008040", "#008080", "#004080", "#800060" ]
-
+  @scriptlanguage_legend = []
+  
   @result['nodes'].each do |user|
     @repos = @@api.get("/users/#{user['name']}/repos", user['public_repos'])
     languages = {}
+    
     if @repos.count == 0
       user['scriptlanguage'] = 'nothing'
     else
       @repos.each do |repo|
+        
+        if repo['language'].nil?
+          repo['language'] = 'unknown'
+        end
+        
         if languages.has_key? repo['language']
           languages[repo['language']] += 1
         else
           languages[repo['language']] = 1
         end
+        
       end
 
       most_used_languages = {}
@@ -167,36 +172,24 @@ def script_language
       user['scriptlanguage'] = most_used_languages.sort {|a,b| b[0] <=> a[0]}[0][1]
       #['C++', 'Ruby']
     end
-  end
-
-  #prepring to get legend for scriptlanguages
-  @scriptlanguage_legend = []
-  @result['nodes'].each do |user|
+    #prepring to get legend for scriptlanguages
     @scriptlanguage_legend << {"lang" => user['scriptlanguage'], "count" => 0, "color" => ""}
   end
+
   @legend = @scriptlanguage_legend.uniq
-  #add colors for languages
-  if @legend.count <= @color.count then
-   @color = @color
-  else
-   color_adder = @legend.count - @color.count
-   while color_adder > 0
-     @color[@color.count - 1 + color_adder] = @color[origin]
-     color_adder -= 1
-     origin += 1
-   end
-  end
+  
   #get languages, count them and add color to result
   @legend.each do |lang|
+    colour = "%06x" % (rand * 0xffffff)
+    lang["color"] = colour.insert(0, '#')
     @result['nodes'].each do |lang2|
-      if lang["lang"] == lang2["scriptlanguage"] then
+      if lang["lang"] == lang2["scriptlanguage"]
         lang["count"] += 1
-        lang["color"] = @color[counter]
-        lang2["color"] = @color[counter]
+        lang2["color"] = lang["color"]
       end
     end
-    counter += 1
   end
+  
   #language sort descending by counts
   @legend = @legend.sort_by {|k| -k['count'] }
 end
