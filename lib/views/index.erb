@@ -104,6 +104,9 @@
             }
           });
         });
+        $('#username').change(function(ev){
+        
+		});
       });
     </script>
     <style>
@@ -265,7 +268,7 @@
     	<div style="float:right;">
     		<form id="viz_form" action="/" method="post">
       			<label class="formlabel">Enter your username:</label>
-      			<input name="user" type="text">
+      			<input id="username" name="user" type="text">
       			<input type="submit" value="Do it!">
       			<input type="hidden" name="level" value="1">
     		</form>

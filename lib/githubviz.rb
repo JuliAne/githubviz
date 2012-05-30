@@ -79,10 +79,11 @@ def aquire_data
 end
 
 def filter_data
+  @data[@user]['user'] = @@api.get("/users/#{@user}")
   @data[@user]['level'] = 0
   @data[@user]['follower_count'] = @data[@user]['followers']
-  @data[@user]['followers'] = @@api.get("/users/#{@user}/followers")
-  @data[@user]['user'] = @@api.get("/users/#{@user}")
+  @data[@user]['followers'] = @@api.get("/users/#{@user}/followers", @data[@user]['follower_count'])
+  puts @data[@user]['follower_count'].inspect
 end
 
 def get_data
@@ -90,14 +91,16 @@ def get_data
     t = {}
     @data.each do |k,v|
       if v['level'] == @level
-        @@api.get("/users/#{k}/followers").each do |f|
+        @@api.get("/users/#{k}/followers", v['follower_count']).each do |f|
           unless @data.has_key? f['login']
             t[f['login']] = f
-            t[f['login']]['level'] = @level+1
-            t[f['login']]['follower_count'] = 0
-            t[f['login']]['followers'] = @@api.get("/users/#{f['login']}/followers")
             t[f['login']]['user'] = @@api.get("/users/#{f['login']}")
+            t[f['login']]['level'] = @level+1
+            t[f['login']]['follower_count'] = t[f['login']]['user']['followers']       
+            t[f['login']]['followers'] = @@api.get("/users/#{f['login']}/followers", t[f['login']]['follower_count']) 
+            puts t[f['login']]['follower_count'].inspect
           end
+          puts v['follower_count'].inspect
         end
       end
     end
