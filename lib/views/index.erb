@@ -12,50 +12,64 @@
           //this happens if form is submitted
           //prevent the default behavior of a form (it should do nothing in our case)
           ev.preventDefault();
-          //send an ajax request to our action
-          $.ajax({
-          	// Ajax activity indicator bound to ajax send/complete
-          	beforeSend: function(){
-          		$('#chart').hide();
-          		$('.ajaxBusy').show();
-          	},
-            complete: function(){
-            	$('#chart').show();
-            	$('.ajaxBusy').hide();
-            },
-            url: "/follower_viz",
-            //serialize the form and use it as data for our ajax request
-            data: $(this).serialize(),
-            //the type of data we are expecting back from server, could be json too
-            dataType: "html",
-            //global:false,
-            success: function(data) {
-              //if our ajax request is successful, replace the content of our viz div with the response data
-              $('#content').html(data);
-            },
-            error: function(jqXHR){
-
-            	if (jqXHR.status === 0) {
-            		$('.gallery').append('<p>Not connect. Verify Network.</p>');
-                	//alert('Not connect.\n Verify Network.');
-            	} else if (jqXHR.status == 404) {
-            		$('.gallery').append('<p>ERROR 404 (Requested page not found)</p>');
-                	//alert('Requested page not found. [404]');
-            	} else if (jqXHR.status == 500) {
-            		$('.gallery').append('<p>ERROR 500 (Internal Server Error) - User name correct?</p>');
-                	//alert('Internal Server Error [500].');
-                }
-            }
-          });
-        $('#viz_network').empty();
-      	$('#viz_repos').empty();
-	  	$('#viz_commits').empty();
-	  	$('#viz_network').append($("<strong>Follower</strong>"));
-      	$('#viz_repos').append($("<strong>RepositoryGrowth</strong>"));
-	  	$('#viz_commits').append($("<strong>Commit Activity</strong>"));
-      	$('#menu').show();
-        });
-
+          //check username
+       	  var value = $('#username').val();
+       	  //console.log("val" + value);
+       	  if(value.length > 0){
+			var result = value.match(/\W/);
+   				if (result){
+      				alert("Usernames can only contain letters from A-Z, numbers from 0-9 and underscores. - Please enter a valid username!");
+   				}else{
+   					//send an ajax request to our action
+         			 $.ajax({
+          			// Ajax activity indicator bound to ajax send/complete
+          				beforeSend: function(){
+          					$('#chart').hide();
+          					$('.ajaxBusy').show();
+          				},
+            			complete: function(){
+            				$('#chart').show();
+            				$('.ajaxBusy').hide();
+            			},
+            			url: "/follower_viz",
+            			//serialize the form and use it as data for our ajax request
+            			data: $(this).serialize(),
+            			//the type of data we are expecting back from server, could be json too
+            			dataType: "html",
+            			//global:false,
+            			success: function(data) {
+              			//if our ajax request is successful, replace the content of our viz div with the response data
+              				$('#content').html(data);
+            			},
+            			error: function(jqXHR, textStatus, errorThrown){
+							console.log("Ajax error: " + errorThrown + " : " + jqXHR.statusText + " : " + jqXHR.status);
+            				if (jqXHR.status === 0) {
+            					//$('.gallery').append('<p>Not connect. Verify Network.</p>');
+                				alert('Not connect.\n Verify Network.');
+                			} else if (jqXHR.status == 400) {
+            					//$('.gallery').append('<p>ERROR 404 (Requested page not found)</p>');
+                				alert('[400]');
+            				} else if (jqXHR.status == 404) {
+            					//$('.gallery').append('<p>ERROR 404 (Requested page not found)</p>');
+                				alert('Requested page not found. [404]');
+            				} else if (jqXHR.status == 500) {
+            					//$('.gallery').append('<p>ERROR 500 (Internal Server Error) - User name correct?</p>');
+                				alert('Internal Server Error [500].');
+                	    	}
+            			}
+          			});
+          			$('#viz_network').empty();
+      				$('#viz_repos').empty();
+	  				$('#viz_commits').empty();
+	  				$('#viz_network').append($("<strong>Follower</strong>"));
+      				$('#viz_repos').append($("<strong>RepositoryGrowth</strong>"));
+	  				$('#viz_commits').append($("<strong>Commit Activity</strong>"));
+      				$('#menu').show();
+   				}
+		  	}else{//value == 0
+				alert("This is not a username - please enter a valid username!")
+		  	}
+		});
         $('#viz_network').click(function(ev){
 
           ev.preventDefault();
@@ -265,7 +279,7 @@
     	<div style="float:right;">
     		<form id="viz_form" action="/" method="post">
       			<label class="formlabel">Enter your username:</label>
-      			<input name="user" type="text">
+      			<input id="username" name="user" type="text" value="GitHub Username">
       			<input type="submit" value="Do it!">
       			<input type="hidden" name="level" value="1">
     		</form>
