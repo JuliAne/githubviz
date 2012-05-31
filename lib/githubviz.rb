@@ -34,15 +34,16 @@ class ApiConnection
           result += @connection.get "#{url}?page=#{page+1}"
         end
       else
+        puts "connection..."
         result = @connection.get url
       end
-
+      
       Request.create!(:name => name, :content_type => type, :content => result.to_json)
     end
-
+    
     result
   end
-
+  
   NoApiKeyError = Class.new(StandardError)
 end
 
@@ -83,7 +84,6 @@ def filter_data
   @data[@user]['level'] = 0
   @data[@user]['follower_count'] = @data[@user]['followers']
   @data[@user]['followers'] = @@api.get("/users/#{@user}/followers", @data[@user]['follower_count'])
-  puts @data[@user]['follower_count'].inspect
 end
 
 def get_data
@@ -97,10 +97,8 @@ def get_data
             t[f['login']]['user'] = @@api.get("/users/#{f['login']}")
             t[f['login']]['level'] = @level+1
             t[f['login']]['follower_count'] = t[f['login']]['user']['followers']       
-            t[f['login']]['followers'] = @@api.get("/users/#{f['login']}/followers", t[f['login']]['follower_count']) 
-            puts t[f['login']]['follower_count'].inspect
+            t[f['login']]['followers'] = @@api.get("/users/#{f['login']}/followers", t[f['login']]['follower_count'])
           end
-          puts v['follower_count'].inspect
         end
       end
     end
