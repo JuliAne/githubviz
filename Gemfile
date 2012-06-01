@@ -4,7 +4,7 @@ gem 'rake'
 gem 'sinatra'
 gem 'thin'
 gem 'rest-client'
-gem 'sqlite3'
+#gem 'sqlite3'
 gem 'activerecord'
 
 group :production do
