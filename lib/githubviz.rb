@@ -21,8 +21,8 @@ class ApiConnection
     type = url[/[^\/]+$/]
     type = "user" unless %w[repos followers].include? type
 
-    req = Request.where("name = ? AND content_type = ? AND updated_at  > ?", name, type, Time.now - 1.day).limit(1)[0]
-    req_check_date = Request.where("name = ? AND content_type = ? AND updated_at <= ?", name, type, Time.now - 1.day).limit(1)[0]
+    req = Request.where("name = ? AND content_type = ? AND updated_at  > ?", name, type, Time.now - 1.week).limit(1)[0]
+    req_check_date = Request.where("name = ? AND content_type = ? AND updated_at <= ?", name, type, Time.now - 1.week).limit(1)[0]
     
     result = []
 
