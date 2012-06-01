@@ -48,7 +48,7 @@
       			$('#advancedSettings').hide();
       			$('.show_hide').hide();
         	});
-        	$('.nodeSwitch').toggle(
+        	$('#nodeSwitch').toggle(
         		function(){
 	   				$('.nodeimage').hide();
 	   				$(this).attr('title', 'OFF');
@@ -114,12 +114,12 @@
     	<div class="level_buttons"> 
       		<form class="level_form" action="/follower_viz" method="post">
       			<input name="user" type="hidden" value="<%= @user %>">
-      			<input style="cursor:pointer;" type="submit" value="1 Level">
+      			<input style="cursor:pointer;" type="submit" value="1 Level" class="btn">
       			<input type="hidden" name="level" value="1">
       		</form>
       		<form class="level_form" action="/follower_viz" method="post">
       			<input name="user" type="hidden" value="<%= @user %>">
-      			<input style="cursor:pointer;" type="submit" value="2 Level">
+      			<input style="cursor:pointer;" type="submit" value="2 Level" class="btn">
       			<input type="hidden" name="level" value="2">
       		</form>
 	      	<div class="mode">
@@ -127,11 +127,11 @@
 	    		<a href="#" id ="network_mode" class="mode">Network Mode</a>
 	    	</div>
 	    	
-	    	<button title="showOrHide" id ="showhide" class="show_hide">hide user name</button>
+	    	<button title="showOrHide" id ="showhide" class="btn">hide user name</button>
 	    	<div id="advancedSettings">
 	    		<h3 id="settings">Advanced Settings</h3>
 	    		
-	    		<button title="NodeSwitch" class="nodeSwitch">ON</button>
+	    		<button title="NodeSwitch" id="nodeSwitch" class="btn">ON</button>
 	    		<p>Script Language</p>
 	    	</div>
     	</div>
