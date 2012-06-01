@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=IE8">
     <title>githubviz</title>
+    <link href="../bootstrap/css/bootstrap.css" rel="stylesheet">
     <script type="text/javascript" src="d3.js?2.7.2"></script>
     <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.7/jquery.min.js"></script>
     <script type="text/javascript">
@@ -16,9 +17,9 @@
        	  var value = $('#username').val();
        	  //console.log("val" + value);
        	  if(value.length > 0){
-			var result = value.match(/\W/);
+			var result = value.match(/[^a-zA-Z0-9_-]/);
    				if (result){
-      				alert("Usernames can only contain letters from A-Z, numbers from 0-9 and underscores. - Please enter a valid username!");
+      				alert("Usernames can only contain letters from A-Z, numbers from 0-9, underscores and hyphens. - Please enter a valid username!");
    				}else{
    					//send an ajax request to our action
          			 $.ajax({
@@ -277,7 +278,7 @@
     		<h1><a href="/" name="go home">githubviz</a></h1>
     	</div>
     	<div style="float:right;">
-    		<form id="viz_form" action="/" method="post">
+    		<form class="form-search" id="viz_form" action="/" method="post">
       			<label class="formlabel">Enter your username:</label>
       			<input id="username" name="user" type="text" value="GitHub Username">
       			<input type="submit" value="Do it!">
