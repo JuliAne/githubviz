@@ -21,8 +21,9 @@ class ApiConnection
     type = url[/[^\/]+$/]
     type = "user" unless %w[repos followers].include? type
 
-    req = Request.where("name = ? AND content_type = ? AND updated_at > ?", name, type, Time.now - 1.week).limit(1)[0]
-
+    req = Request.where("name = ? AND content_type = ? AND updated_at  > ?", name, type, Time.now - 1.day).limit(1)[0]
+    req_check_date = Request.where("name = ? AND content_type = ? AND updated_at <= ?", name, type, Time.now - 1.day).limit(1)[0]
+    
     result = []
 
     if req
@@ -37,8 +38,14 @@ class ApiConnection
         puts "connection..."
         result = @connection.get url
       end
-      
-      Request.create!(:name => name, :content_type => type, :content => result.to_json)
+     
+      if req_check_date
+        puts "updating db entry..."
+        Request.update(req_check_date[:id], :name => name, :content_type => type, :content => result.to_json)
+      else
+        puts "creating db entry..."
+        Request.create!(:name => name, :content_type => type, :content => result.to_json)
+      end
     end
     
     result
@@ -148,9 +155,7 @@ def script_language
     else
       @repos.each do |repo|
         
-        if repo['language'].nil?
-          repo['language'] = 'unknown'
-        end
+        repo['language'] = 'unknown' if repo['language'].nil?
         
         if languages.has_key? repo['language']
           languages[repo['language']] += 1
