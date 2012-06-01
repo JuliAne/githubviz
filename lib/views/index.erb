@@ -180,13 +180,20 @@
       #menu li{
       	float:left;
       	list-style-type: none;
-      	padding: 10px 0px 0px 10px;
+      	padding: 10px 30px 0px 0px;
       }     
       .level_buttons{
       	z-index: 1;
 		position: absolute;
-		right: 70px;
+		right: 55px;
 		opacity: 1;
+		-webkit-box-shadow:inset 0 1px 0 rgba(255, 255, 255, 0.2), 0 1px 5px rgba(0, 0, 0, 0.2);
+		border-radius:10px;
+		padding: 10px;
+      }
+      #brand{
+      	float:left;
+      	margin: 0px 20px 0px 30px;
       }
       .level_buttons form{
       	float:left;
@@ -251,7 +258,7 @@
     </style>
   </head>
   <body>
-  <!--[if IE]>
+  <!--[if lt IE 9]>
     <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/chrome-frame/1/CFInstall.min.js"></script>
     <style>
      .chromeFrameInstallDefaultStyle {
@@ -271,7 +278,7 @@
     </script>
   <![endif]-->
     <div id="header" class="well">
-    	<div style="float:left;">
+    	<div id="brand">
     		<h1><a href="/" name="go home">githubviz</a></h1>
     	</div>
     	<div style="float:right;">
@@ -283,7 +290,7 @@
   		</div>
 		<div id="menu">
       		<ul>
-				<li><a id="viz_network" href="#"></a></li>
+				<li class="menu_list"><a id="viz_network" href="#"></a></li>
 				<li><a id="viz_repos" href="#"></a></li>
 				<li><a id="viz_commits" href="#"></a></li>
       		</ul>
