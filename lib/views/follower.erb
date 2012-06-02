@@ -60,7 +60,7 @@
             	            		
             		var x = <%= @legend.to_json%>;
                 	$.each(x, function(key, value){
-                		$("#advancedSettings").append("<ul><li style='color:" + value["color"] + "'>" + value["lang"] + " : " + value["count"] + "</li></ul>");
+                		$("#advancedSettings").append("<ul><li style='font-weight:bold; color:" + value["color"] + ";'>" + value["lang"] + " : " + value["count"] + "</li></ul>");
                 	});
 	  			},
 	  			function(){
