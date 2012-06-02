@@ -111,6 +111,13 @@
    </script>
    <div class="vis" id="viz">
    <div class="description" id="desc1">
+   		<div id ="desc_text">
+    		<h3><%= @user%>'s network of <%= @data.keys.length%> followers</h3>
+    		<p>This visualization shows the user's network of followers in 1 level or 2 levels.<br/> 
+    		In the 1st level all gitusers which are directly following <%=@user%> are displayed. <br/> 
+    		In the 2nd level all direct followers of <%=@user%>'s followers are additionally displayed.
+    		</p>
+    	</div>
     	<div class="level_buttons"> 
       		<form class="level_form" action="/follower_viz" method="post">
       			<input name="user" type="hidden" value="<%= @user %>">
@@ -135,15 +142,8 @@
 	    		<p>Script Language</p>
 	    	</div>
     	</div>
-    	<div id ="desc_text">
-    		<h3><%= @user%>'s network of <%= @data.keys.length%> followers</h3>
-    		<p>This visualization shows the user's network of followers in 1 level or 2 levels.<br/> 
-    		In the 1st level all gitusers which are directly following <%=@user%> are displayed. <br/> 
-    		In the 2nd level all direct followers of <%=@user%>'s followers are additionally displayed.
-    		</p>
-    	</div>
    </div>
-   <div style="clear:left;">
+   <div style="float:right;">
       <div class='gallery' id='chart'> </div>
    </div>
    <script src='d3.layout.js?2.7.2' type='text/javascript'></script>
@@ -152,7 +152,7 @@
    <script type='text/javascript'>
    $(function (){
     
-   var w = $(window).width() - 20
+   var w = $(window).width() - 270
           h = $(window).height() - $("#header").height() -150
           fill = d3.scale.category20();
    var vis = d3.select("#chart").append("svg")
