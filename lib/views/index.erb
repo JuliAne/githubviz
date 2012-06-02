@@ -26,6 +26,7 @@
    				if (result){
       				alert("Usernames can only contain letters from A-Z, numbers from 0-9, underscores and hyphens. - Please enter a valid username!");
    				}else{
+   					//$('body').css('background-image', 'url(picz/background.jpg)');
    					//send an ajax request to our action
          			 $.ajax({
           			// Ajax activity indicator bound to ajax send/complete
@@ -64,13 +65,13 @@
                 	    	}
             			}
           			});
-          			$('.menu_list').remove();
+          			$('#index_show').remove();
           			$('#viz_network').empty();
       				$('#viz_repos').empty();
 	  				$('#viz_commits').empty();
-	  				$('#viz_network').append($("<strong>Follower</strong>"));
-      				$('#viz_repos').append($("<strong>Repository Growth</strong>"));
-	  				$('#viz_commits').append($("<strong>Commit Activity</strong>"));
+	  				$('#viz_network').text("Follower");
+      				$('#viz_repos').text("Repository Growth");
+	  				$('#viz_commits').text("Commit Activity");
       				$('#menu').show();
    				}
 		  	}else{//value == 0
@@ -130,10 +131,15 @@
     <style>
       a:hover {
       	text-decoration:none;
+      	color:#ED0000;
+      }
+      a{
+      	color: #3f3f3f;
       }
       .ajaxBusy{
     	display:none;
     	text-align: center;
+    	
       }
       circle.node {
         stroke: #fff;
@@ -151,7 +157,7 @@
       }
       body{
       	background-color: #FFF;
-      	background-image: url(picz/background.png);
+      	background-image: url(picz/background_index.jpg);
       	background-repeat:no-repeat;
       }
       h3 {
@@ -172,6 +178,9 @@
       }
       .gallery{
       	text-align: center;
+      	background-color:#FFF;
+      	margin: 10px 10px 0px 0px;
+      	border-radius:10px;
       }
       #desc_text{
       	width:200px;
@@ -179,15 +188,25 @@
       	background-color:rgba(72, 202, 255, 0.7);
       	margin:10px;
       	color: #3f3f3f;
+      	border-radius:10px;
+      }
+      .description_text{
+      	width:200px;
+      	padding:10px;
+      	background-color:rgba(72, 202, 255, 0.7);
+      	margin:10px;
+      	color: #3f3f3f;
+      	border-radius:10px;
       }
       #header{
       	background-color: rgba(72, 202, 255, 0.7);
       	margin: 30px 10px;
+      	border-radius:10px;
       }
       .description {
       	text-align:left;
       	height: 85px;
-      	width:250px;
+      	width:240px;
       	float:left;
       }
       .formlabel {
@@ -202,6 +221,9 @@
       	list-style-type: none;
       	padding: 12px 30px 0px 0px;
       }     
+      .menu_list a:hover{
+      	color: #ED0000;
+      }   
       .level_buttons{
 		-webkit-box-shadow:inset 0 1px 0 rgba(255, 255, 255, 0.2), 0 1px 5px rgba(0, 0, 0, 0.2);
      	-moz-box-shadow: 0 1px 0 rgba(255, 255, 255, 0.2), 0 1px 5px rgba(0, 0, 0, 0.2);
@@ -220,6 +242,11 @@
        #brand a{
       	color: #3f3f3f;
       }
+      
+      #brand a:hover{
+      	color: #ED0000;
+      }
+      
       .level_buttons form{
       	float:left;
       	padding: 0px 10px 0px 0px;
@@ -288,6 +315,11 @@
 	 .nodetext {pointer-events: none; font: 10px sans-serif; }
 	 .titles{
 	 	text-align:center;
+	 	margin: 10px 0px 0px 0px;
+	 }
+	 #repos{
+	 	float:right;
+	 	padding-top: 10px;
 	 }
     </style>
   </head>
@@ -324,23 +356,23 @@
   		</div>
 		<div id="menu">
       		<ul>
-				<li class="menu_list">Please enter your user name! You're not registered? Please register a user name @ github!</li>
-				<li><a id="viz_network" href="#"></a></li>
-				<li><a id="viz_repos" href="#"></a></li>
-				<li><a id="viz_commits" href="#"></a></li>
+				<li id="index_show">Please enter your user name! You're not registered? Please register a user name @ github!</li>
+				<li class="menu_list"><a id="viz_network" href="#"></a></li>
+				<li class="menu_list"><a id="viz_repos" href="#"></a></li>
+				<li class="menu_list"><a id="viz_commits" href="#"></a></li>
       		</ul>
     	</div>
     </div>
     <div id="content">
+    	<div class="ajaxBusy">
+			<p>Loading</p>
+			<p><img src="picz/ajax-loader.gif" alt="...it's loading..."></p>
+		</div>
     	<div class="vis">
     		
     		<div class="description">
     		</div>
     		<div class="gallery"></div>
-		</div>
-		<div class="ajaxBusy">
-			<p>Loading</p>
-			<p><img src="picz/ajax-loader.gif" alt="...it's loading..."></p>
 		</div>
 	</div>
   </body>

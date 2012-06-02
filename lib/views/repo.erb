@@ -1,8 +1,24 @@
 <div id="viz">
 	<div class="description">
-		<h1 class="titles"><%= @user %>'s Repo GROWTH</h1>
+		<div class="description_text">
+		<h3 class="titles"><%= @user %>'s Repo GROWTH</h3>
+		</div>
     </div>
-    <div class="gallery">
+    <div class="gallery" id="repos">
    		<p> UNDER CONSTRUCTION </p>
-   	</div>  
+   	</div> 
+   	<script src='d3.layout.js?2.7.2' type='text/javascript'></script>
+   <script src='d3.geom.js?2.7.2' type='text/javascript'> </script>
+   <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.7/jquery.min.js"></script>
+   <script type='text/javascript'>
+   $(function (){
+    
+   var w = $(window).width() - 270
+       h = $(window).height() - $("#header").height();
+          
+   var vis = d3.select("#repos").append("svg")
+          .attr("width", w)
+          .attr("height", h);
+   });
+   </script>
 </div>   
