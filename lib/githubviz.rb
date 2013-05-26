@@ -1,8 +1,10 @@
 #!/usr/bin/env ruby
 
 require 'rubygems'
-require 'sinatra'
 require 'active_record'
+require 'bundler/setup'
+Bundler.require(:default)
+
 
 class Request < ActiveRecord::Base
 end
@@ -21,8 +23,8 @@ class ApiConnection
     type = url[/[^\/]+$/]
     type = "user" unless %w[repos followers].include? type
 
-    req = Request.where("name = ? AND content_type = ? AND updated_at  > ?", name, type, Time.now - 1.week).limit(1)[0]
-    req_check_date = Request.where("name = ? AND content_type = ? AND updated_at <= ?", name, type, Time.now - 1.week).limit(1)[0]
+    req = Request.where("name = ? AND content_type = ? AND updated_at  > ?", name, type, Time.now - 1.year).limit(1)[0]
+    req_check_date = Request.where("name = ? AND content_type = ? AND updated_at <= ?", name, type, Time.now - 1.year).limit(1)[0]
     
     result = []
 
@@ -55,8 +57,8 @@ class ApiConnection
 end
 
 class GithubViz < Sinatra::Base
-
 set :app_file, __FILE__
+puts "#{app_file}"
 
 require 'config'
 
