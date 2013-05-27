@@ -162,7 +162,7 @@
    var force = d3.layout.force()
             .charge(-180)
             .linkDistance(60)
-	    .gravity(0.5)
+	    .gravity(0.1)
             .nodes(json.nodes)
             .links(json.links)
             .size([w, h])
