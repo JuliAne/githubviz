@@ -1,17 +1,16 @@
 #!/usr/bin/env ruby
 
 require 'rubygems'
+require 'sinatra'
 require 'active_record'
-require 'bundler/setup'
-Bundler.require(:default)
-
+require 'github-v3-api'
 
 class Request < ActiveRecord::Base
 end
 
 class ApiConnection
 
-  require 'github_v3_api/github_v3_api.rb'
+  #require 'github_v3_api/github_v3_api.rb'
 
   def initialize api_key
     puts "#{Time.now}: Initializing ApiConnection..."
@@ -57,8 +56,8 @@ class ApiConnection
 end
 
 class GithubViz < Sinatra::Base
+
 set :app_file, __FILE__
-puts "#{app_file}"
 
 require 'config'
 

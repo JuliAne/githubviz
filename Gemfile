@@ -1,11 +1,10 @@
-source "https://rubygems.org"
-ruby "2.0.0"
+source :rubygems
 
 gem 'rake'
 gem 'sinatra'
 gem 'thin'
 gem 'rest-client'
-gem 'activerecord' , '4.0.0beta1'
+gem 'activerecord'
 
 group :development do
   gem 'sqlite3'
@@ -14,5 +13,4 @@ end
 group :production do
   gem 'pg'
 end
-
-gem 'github-v3-api'
+#gem 'github-v3-api'

@@ -143,7 +143,7 @@
 	    	</div>
     	</div>
    </div>
-   <div class='gallery' id='chart'></div>
+   <div class='gallery' id='chart'> </div>
    <script src='d3.layout.js?2.7.2' type='text/javascript'></script>
    <script src='d3.geom.js?2.7.2' type='text/javascript'> </script>
    <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.7/jquery.min.js"></script>
@@ -151,8 +151,8 @@
    $(function (){
     
    var w = $(window).width() - 270
-       h = $(window).height() - $("#header").height()
-       fill = d3.scale.category20();
+          h = $(window).height() - $("#header").height()
+          fill = d3.scale.category20();
    var vis = d3.select("#chart").append("svg")
           .attr("width", w)
           .attr("height", h);
