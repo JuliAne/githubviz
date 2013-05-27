@@ -160,8 +160,9 @@
    var json = <%= @result.to_json %>; 
 	  
    var force = d3.layout.force()
-            .charge(-200)
-            .linkDistance(30)
+            .charge(-180)
+            .linkDistance(60)
+	    .gravity(0.5)
             .nodes(json.nodes)
             .links(json.links)
             .size([w, h])
