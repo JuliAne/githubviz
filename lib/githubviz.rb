@@ -10,7 +10,7 @@ end
 
 class ApiConnection
 
-  #require 'github_v3_api/github_v3_api.rb'
+  require 'github_v3_api/github_v3_api.rb'
 
   def initialize api_key
     puts "#{Time.now}: Initializing ApiConnection..."
