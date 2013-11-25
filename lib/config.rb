@@ -9,7 +9,7 @@ if env == 'development'
 else
   require 'pg'
   require 'uri'
-  db = URI.parse(ENV['DATABASE_URL'])
+  db = URI.parse(ENV['HEROKU_POSTGRESQL_GOLD'])
 
   @@config = {
     "adapter" => db.scheme == 'postgres' ? 'postgresql' : db.scheme,
