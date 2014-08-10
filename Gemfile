@@ -1,11 +1,11 @@
 source "https://rubygems.org"
-ruby "2.0.0"
+ruby "2.1.1"
 
 gem 'rake'
 gem 'sinatra'
 gem 'thin'
 gem 'rest-client'
-gem 'activerecord' , '4.0.0beta1'
+gem 'activerecord'
 
 group :development do
   gem 'sqlite3'
